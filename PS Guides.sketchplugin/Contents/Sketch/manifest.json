@@ -1,0 +1,49 @@
+{
+  "author" : "Pratik Shah",
+  "commands" : [
+    {
+        "name": "Init",
+        "identifier": "commandInit",
+        "handlers": {
+                "actions": {
+                    "OpenDocument": "commandInit",
+                }
+            },
+        "script": "handler.js"
+    },
+    {
+      "script" : "handler.js",
+      "handler" : "addGuides",
+      "shortcut" : "shift cmd ''",
+      "name" : "Setup Guides",
+      "identifier" : "addGuides"
+    },
+    {
+      "script" : "handler.js",
+      "handler" : "clearGuides",
+      "shortcut" : "option shift cmd '",
+      "name" : "Clear Guides",
+      "identifier" : "clearGuides"
+    },
+    {
+      "script" : "handler.js",
+      "handler" : "aboutPratikShah",
+      "shortcut" : "",
+      "name" : "About Pratik Shah",
+      "identifier" : "aboutPratikShah"
+    }
+  ],
+  "menu" : {
+    "items" : [
+      "addGuides",
+      "clearGuides",
+      "-",
+      "aboutPratikShah"
+    ]
+  },
+  "identifier" : "website.pratishah.guides",
+  "version" : "1.1.0",
+  "description" : "One click solution for your guides problems :)",
+  "authorEmail" : "hello@pratikshah.website",
+  "name" : "PS: Guides"
+}
