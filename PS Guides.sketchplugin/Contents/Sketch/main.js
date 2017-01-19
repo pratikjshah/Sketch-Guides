@@ -54,6 +54,16 @@ function createDownloadWindow() {
   return [alert];
 }
 
+function createErrorWindow(message,confirmButtonText,cancelButtonText) {
+  // Setup the window
+  var alert = COSAlertWindow.new();
+  alert.setIcon(NSImage.alloc().initByReferencingFile(plugin.urlForResourceNamed("PS-Guides.png").path()));
+  alert.setMessageText(message)
+  alert.addButtonWithTitle(confirmButtonText);
+  alert.addButtonWithTitle(cancelButtonText);
+  return [alert];
+}
+
 function createGuidesWindow(column, gutter, lOffset, rOffset) {
   // Setup the window
   var alert = COSAlertWindow.new();

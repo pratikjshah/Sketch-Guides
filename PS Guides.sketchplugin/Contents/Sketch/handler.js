@@ -43,9 +43,11 @@ function doUpdate(context) {
 
    var data = JSON.parse(validJSONString);
    var serverVersion = data.version;
+   var updatedOn = data.updated_on;
+   var now = new Date();
    //context.document.showMessage("serverVersion: "+serverVersion + " currentVersion: "+currentVersion);
 
-   var isVersionOld = (currentVersion <= serverVersion) ? true : false;
+   var isVersionOld = ((currentVersion < serverVersion) &&  (updatedOn < now.getTime())) ? true : false;
    if (isVersionOld) {
      //context.document.showMessage("show update alert");
      var window = createDownloadWindow();
@@ -69,19 +71,31 @@ var addGuides = function(context) {
   var selectedLayers = context.selection;
   var selectedCount = selectedLayers.count();
   var layer = selectedLayers.firstObject();
+  var layerType = layer.className();
+  var hasArtboard = hasParentArtboard(context,layer);
 
-  if (layer.isisArtboard) {
-    context.document.showMessage("Currently.. Artboard selection is not allowed.");
-  } else if (selectedCount <= 0) {
-    //log('No layers are selected.');
-    context.document.showMessage("No layers are selected.");
+  //document.showMessage("layerType: "+layerType);
+  //context.document.showMessage("hasArtboard: "+hasArtboard);
+
+  if (hasArtboard < 0) {
+    context.document.showMessage("Soemthing is wrong");
     return;
-  } else if (selectedCount >= 2) {
-    //log('Multiple layers selected.');
-    context.document.showMessage("Please select single layer.");
+  } else if (hasArtboard == 2) {
+    context.document.showMessage("Please select an element inside an Artboard.");
+    return;
+  } else if (isSelectionAllowed(layerType) < 0) {
+    context.document.showMessage("Currently "+layerType+" selection is not allowed.");
     return;
   } else {
-    setGuides(context, layer);
+    if (selectedCount <= 0) {
+      context.document.showMessage("No layers are selected.");
+      return;
+    } else if (selectedCount >= 2) {
+      context.document.showMessage("Please select single layer.");
+      return;
+    } else {
+      setGuides(context, layer);
+    }
   }
 }
 
