@@ -6,6 +6,10 @@ var commandInit = function(context) {
   //checkUpdate(context);
 }
 
+var checkForUpdate = function(context) {
+  doUpdate(context);
+}
+
 var checkUpdate = function(context) {
   var now = new Date();
   var lastTime = readData();
@@ -63,6 +67,8 @@ function doUpdate(context) {
        //context.document.showMessage("newTime: "+newTime);
        saveData(newTime.getTime());
      }
+   } else {
+     context.document.showMessage("Hurray! You have latest version of PS: Guides");
    }
   //context.document.showMessage("currentVersion: "+currentVersion + " serverVersion: "+ serverVersion+ " isVersionOld: "+isVersionOld);
 }
@@ -70,11 +76,17 @@ function doUpdate(context) {
 var addGuides = function(context) {
   var selectedLayers = context.selection;
   var selectedCount = selectedLayers.count();
+
+  if (selectedCount <= 0) {
+    context.document.showMessage("Please select at least one element.");
+    return;
+  }
+
   var layer = selectedLayers.firstObject();
   var layerType = layer.className();
   var hasArtboard = hasParentArtboard(context,layer);
 
-  //document.showMessage("layerType: "+layerType);
+  //document.showMessage("layoutSettings: "+context.document.layoutSettings());
   //context.document.showMessage("hasArtboard: "+hasArtboard);
 
   if (hasArtboard < 0) {
@@ -86,16 +98,11 @@ var addGuides = function(context) {
   } else if (isSelectionAllowed(layerType) < 0) {
     context.document.showMessage("Currently "+layerType+" selection is not allowed.");
     return;
+  } else if (selectedCount >= 2) {
+    context.document.showMessage("Please select single layer.");
+    return;
   } else {
-    if (selectedCount <= 0) {
-      context.document.showMessage("No layers are selected.");
-      return;
-    } else if (selectedCount >= 2) {
-      context.document.showMessage("Please select single layer.");
-      return;
-    } else {
-      setGuides(context, layer);
-    }
+    setGuides(context, layer);
   }
 }
 

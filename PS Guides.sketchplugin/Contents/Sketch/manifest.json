@@ -24,6 +24,12 @@
       "shortcut" : "option shift cmd '",
       "name" : "Clear Guides",
       "identifier" : "clearGuides"
+    },{
+      "script" : "handler.js",
+      "handler" : "checkForUpdate",
+      "shortcut" : "",
+      "name" : "Check update",
+      "identifier" : "checkForUpdate"
     },
     {
       "script" : "handler.js",
@@ -38,11 +44,13 @@
       "addGuides",
       "clearGuides",
       "-",
+      "checkForUpdate",
+      "-",
       "aboutPratikShah"
     ]
   },
   "identifier" : "website.pratishah.guides",
-  "version" : "1.2.2",
+  "version" : "1.2.3",
   "description" : "One click solution for your guides problems :)",
   "authorEmail" : "hello@pratikshah.website",
   "name" : "PS: Guides"
