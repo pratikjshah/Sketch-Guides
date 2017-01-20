@@ -34,7 +34,7 @@ function setGuides(context, layer) {
     //context.document.showMessage("Column: "+column+" | Gutter: "+gutter + " | Layer: "+JSON.stringify(layerProps));
     var columnWidth = Math.round((layerProps.width - lOffset - rOffset - Math.round((gutter*(column-1))))/column);
     var artboardX = artboard.frame().x();
-    var startPosition = (artboardX - layerProps.x + lOffset)*-1;
+    var startPosition = ((artboardX - layerProps.x)*-1) + lOffset;
 
     //context.document.showMessage("columnWidth: "+columnWidth+" | startPosition: "+startPosition);
 /*
