@@ -51,7 +51,7 @@ function doUpdate(context) {
    var now = new Date();
    //context.document.showMessage("serverVersion: "+serverVersion + " currentVersion: "+currentVersion);
 
-   var isVersionOld = ((currentVersion <= serverVersion) &&  (updatedOn < now.getTime())) ? true : false;
+   var isVersionOld = ((currentVersion < serverVersion) &&  (updatedOn < now.getTime())) ? true : false;
    if (isVersionOld) {
      //context.document.showMessage("show update alert");
      var window = createDownloadWindow();
