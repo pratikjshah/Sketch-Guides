@@ -1,3 +1,11 @@
+/*----------------------------------------------------------
+
+author: Pratik Shah
+Homepage: https://github.com/pratikjshah/PS-Guides
+license: MIT
+
+----------------------------------------------------------*/
+
 // Needed globally
 var doc;
 var page;
@@ -6,6 +14,7 @@ var plugin;
 var selection;
 var updateTime;
 var localDataPath;
+var configData;
 
 // Initialise
 function initPlugin(context) {
@@ -16,8 +25,19 @@ function initPlugin(context) {
   selection = context.selection;
   pluginRoot = context.scriptPath.stringByDeletingLastPathComponent().stringByDeletingLastPathComponent().stringByDeletingLastPathComponent();
   localDataPath = pluginRoot + "/Contents/Resources/user.config";
+  var currentVersion = context.plugin.version() + "";
+  //configData = {localUpdateTime:-1, serverUpdateTime:0, localVersion:currentVersion, localVersion:currentVersion};
   //checkUpdate(context);
-  //context.document.showMessage("localDataPath: " + localDataPath);
+  configData = readData();
+  if(configData.localUpdateTime < 0) {
+    var newTime = new Date();
+    newTime.setDate(newTime.getDate() - 1);
+    configData.localUpdateTime = newTime.getTime();
+    configData.localVersion = context.plugin.version() + "";
+
+    saveData(configData);
+  }
+  //context.document.showMessage(JSON.stringify(configData) + " | typeof: " + typeof(configData));
 }
 
 // Utilities
@@ -48,9 +68,19 @@ function createDownloadWindow() {
   // Setup the window
   var alert = COSAlertWindow.new();
   alert.setIcon(NSImage.alloc().initByReferencingFile(plugin.urlForResourceNamed("PS-Guides.png").path()));
-  alert.setMessageText("New version of PS: Guides is available!")
+  alert.setMessageText("New version available");
+  alert.setInformativeText("Your current PS: Guides "+ configData.localVersion + " is out of date!");
   alert.addButtonWithTitle("Download");
   alert.addButtonWithTitle("Remind me tomorrow");
+  return [alert];
+}
+
+function notAbletoCheckUpdateWindow() {
+  // Setup the window
+  var alert = COSAlertWindow.new();
+  alert.setIcon(NSImage.alloc().initByReferencingFile(plugin.urlForResourceNamed("PS-Guides.png").path()));
+  alert.setMessageText("🙀Can not check for updates.🙀 Please visit the web site and download newest version.\n" + context.plugin.homepageURL());
+  alert.addButtonWithTitle("Download");
   return [alert];
 }
 
@@ -110,14 +140,41 @@ function createGuidesWindow(column, gutter, lOffset, rOffset) {
   return [alert];
 }
 
+function showAvailableUpdateDialog(context) {
+  var window = createDownloadWindow();
+  var alert = window[0];
+  // When “Ok” is clicked
+  var response = alert.runModal();
+  if (response == "1000") {
+    //context.document.showMessage("Go to download");
+    openUrlInBrowser("http://guides.pratikshah.website/download.php");
+  } else {
+    //context.document.showMessage("Check later");
+    setUpdateCheckDayOnTomorrow();
+  }
+}
+
+function setUpdateCheckDayOnTomorrow() {
+  var newTime = new Date();
+  newTime.setDate(newTime.getDate() + 1);
+  configData.localUpdateTime = newTime.getTime();
+  saveData(configData);
+}
+
+function openUrlInBrowser(url) {
+    NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(url));
+}
+
 function saveData(data) {
-	    var string = [NSString stringWithFormat: "%@", data];
-			[string writeToFile: localDataPath atomically: true encoding: NSUTF8StringEncoding error: nil];
+	var string = [NSString stringWithFormat: "%@", JSON.stringify(data)];
+	[string writeToFile: localDataPath atomically: true encoding: NSUTF8StringEncoding error: nil];
 }
 
 function readData() {
   if(NSFileManager.defaultManager().fileExistsAtPath(localDataPath)){
-    data = NSString.stringWithContentsOfFile_encoding_error(localDataPath,4, nil);
+    var string = NSString.stringWithContentsOfFile_encoding_error(localDataPath,4, nil);
+    string = string.replace(/(\r\n|\n|\r)/gm,"");
+    var data = JSON.parse(string);
     return data;
   }
 }
