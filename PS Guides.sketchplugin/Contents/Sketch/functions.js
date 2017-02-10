@@ -1,3 +1,11 @@
+/*----------------------------------------------------------
+
+author: Pratik Shah
+Homepage: https://github.com/pratikjshah/PS-Guides
+license: MIT
+
+----------------------------------------------------------*/
+
 @import "main.js"
 
 function setGuides(context, layer) {
@@ -9,7 +17,7 @@ function setGuides(context, layer) {
   var alert = window[0];
 
   // When “Ok” is clicked
-  var response = alert.runModal()
+  var response = alert.runModal();
   if (response == "1000") {
 
     // Clear old guides
@@ -37,18 +45,7 @@ function setGuides(context, layer) {
     var startPosition = ((artboardX - layerProps.x)*-1) + lOffset;
 
     //context.document.showMessage("columnWidth: "+columnWidth+" | startPosition: "+startPosition);
-/*
-    addVGuide(startPosition);
 
-    for (var i =0; i< column; i++) {
-      startPosition = startPosition + columnWidth;
-      addVGuide(startPosition);
-      if (i < column-1) {
-        startPosition = startPosition + gutter;
-        addVGuide(startPosition);
-      }
-    }
-*/
     var frameCenter = startPosition + Math.round(layerProps.width / 2);
     var gutterCount = column + 1;
     var spaceForColumn = layerProps.width - (gutterCount * gutter);
