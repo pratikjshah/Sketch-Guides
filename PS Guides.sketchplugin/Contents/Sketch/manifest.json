@@ -23,15 +23,17 @@
             "script": "handler.js",
             "handler": "addGuides",
             "shortcut": "shift cmd ''",
-            "name": "Setup Guides",
-            "identifier": "addGuides"
+            "name": "Add Guides",
+            "identifier": "addGuides",
+            "icon" : "add-guides.png"
         },
         {
             "script": "handler.js",
             "handler": "clearGuides",
             "shortcut": "option shift cmd '",
             "name": "Clear Guides",
-            "identifier": "clearGuides"
+            "identifier": "clearGuides",
+            "icon" : "clear-guides.png"
         },
         {
             "script": "help.js",
