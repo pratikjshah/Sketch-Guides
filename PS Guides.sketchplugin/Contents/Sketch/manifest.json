@@ -1,57 +1,69 @@
 {
-  "author" : "Pratik Shah",
-  "commands" : [
-    {
-        "name": "Init",
-        "identifier": "commandInit",
-        "handlers": {
+    "name": "PS: Guides",
+    "description": "One click solution for your guides problems :)",
+    "author": "Pratik Shah",
+    "email": "hello@pratikshah.website",
+    "homepage": "http://guides.pratikshah.website/",
+    "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
+    "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
+    "version": "1.2.3",
+    "identifier": "website.pratikshah.guides",
+    "commands": [
+        {
+            "name": "Init",
+            "identifier": "commandInit",
+            "handlers": {
                 "actions": {
-                    "OpenDocument": "commandInit",
+                    "OpenDocument": "commandInit"
                 }
             },
-        "script": "handler.js"
-    },
-    {
-      "script" : "handler.js",
-      "handler" : "addGuides",
-      "shortcut" : "shift cmd ''",
-      "name" : "Setup Guides",
-      "identifier" : "addGuides"
-    },
-    {
-      "script" : "handler.js",
-      "handler" : "clearGuides",
-      "shortcut" : "option shift cmd '",
-      "name" : "Clear Guides",
-      "identifier" : "clearGuides"
-    },{
-      "script" : "handler.js",
-      "handler" : "checkForUpdate",
-      "shortcut" : "",
-      "name" : "Check update",
-      "identifier" : "checkForUpdate"
-    },
-    {
-      "script" : "handler.js",
-      "handler" : "aboutPratikShah",
-      "shortcut" : "",
-      "name" : "About Pratik Shah",
-      "identifier" : "aboutPratikShah"
+            "script": "handler.js"
+        },
+        {
+            "script": "handler.js",
+            "handler": "addGuides",
+            "shortcut": "shift cmd ''",
+            "name": "Setup Guides",
+            "identifier": "addGuides"
+        },
+        {
+            "script": "handler.js",
+            "handler": "clearGuides",
+            "shortcut": "option shift cmd '",
+            "name": "Clear Guides",
+            "identifier": "clearGuides"
+        },
+        {
+            "script": "help.js",
+            "handler": "reportIssue",
+            "shortcut": "",
+            "name": "Report issue",
+            "identifier": "reportIssue"
+        },
+        {
+            "script": "help.js",
+            "handler": "checkForUpdate",
+            "shortcut": "",
+            "name": "Check for update",
+            "identifier": "checkForUpdate"
+        },
+        {
+            "script": "help.js",
+            "handler": "aboutPratikShah",
+            "shortcut": "",
+            "name": "About Pratik Shah",
+            "identifier": "aboutPratikShah"
+        }
+    ],
+    "menu": {
+        "items": [
+            "addGuides",
+            "clearGuides",
+            "-",
+            "reportIssue",
+            "checkForUpdate",
+            "-",
+            "aboutPratikShah"
+        ]
     }
-  ],
-  "menu" : {
-    "items" : [
-      "addGuides",
-      "clearGuides",
-      "-",
-      "checkForUpdate",
-      "-",
-      "aboutPratikShah"
-    ]
-  },
-  "identifier" : "website.pratishah.guides",
-  "version" : "1.2.3",
-  "description" : "One click solution for your guides problems :)",
-  "authorEmail" : "hello@pratikshah.website",
-  "name" : "PS: Guides"
 }
