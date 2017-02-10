@@ -1,5 +1,4 @@
 
-![The add guides view](http://guides.pratikshah.website/assets/PS-Grid-logo.png)
 # PS-Guides Sketch plugin
 
 Quickly generate Guides for a selected element.
