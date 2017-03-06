@@ -20,9 +20,6 @@ function setGuides(context, layer) {
   var response = alert.runModal();
   if (response == "1000") {
 
-    // Clear old guides
-    clearGuides(context);
-
     // Get the user’s values
     // The replace strips any non-numeric (and non-slash for radius) characters
     // e.g. `px`
@@ -30,6 +27,9 @@ function setGuides(context, layer) {
     var gutter = parseInt(gutterTextfield.stringValue().replace(/[^0-9.,]/g, ''));
     var lOffset = parseInt(lOffsetTextfield.stringValue().replace(/[^0-9.,]/g, ''));
     var rOffset = parseInt(rOffsetTextfield.stringValue().replace(/[^0-9.,]/g, ''));
+
+    // Clear old guides
+    clearGuides(context);
 /*
     if((column > 0) && (gutter > 0) && (lOffset >= 0) && (rOffset >= 0)) {
       //context.document.showMessage("Please provide valid inputs");
