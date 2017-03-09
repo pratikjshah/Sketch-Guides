@@ -54,7 +54,7 @@ function setGuides(context, layer) {
     var total = (columnWidth*column)+(gutter*(gutterCount-2));
     //context.document.showMessage("Total: "+total+" | selection width: "+layerProps.width);
 
-    if (total > parseInt(layerProps.width)) {
+    if (total != parseInt(layerProps.width)) {
       var message = "It is not possible to divide selected width of "+layerProps.width+" into "+column+" equal columns and gutter of "+gutter;
       var confirmButtonText = "Change config";
       var cancelButtonText = "Cancel";
