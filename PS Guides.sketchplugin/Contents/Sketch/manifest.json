@@ -6,7 +6,7 @@
     "homepage": "http://guides.pratikshah.website/",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "1.3.3",
+    "version": "1.4.0",
     "identifier": "website.pratikshah.guides",
     "commands": [
         {
@@ -25,6 +25,14 @@
             "shortcut": "shift cmd \\",
             "name": "Add Guides",
             "identifier": "addGuides",
+            "icon" : "add-guides.png"
+        },
+        {
+            "script": "handler.js",
+            "handler": "addLastGuides",
+            "shortcut": "shift cmd ]",
+            "name": "Add Guides with last setting",
+            "identifier": "addLastGuides",
             "icon" : "add-guides.png"
         },
         {
@@ -60,6 +68,7 @@
     "menu": {
         "items": [
             "addGuides",
+            "addLastGuides",
             "clearGuides",
             "-",
             "reportIssue",

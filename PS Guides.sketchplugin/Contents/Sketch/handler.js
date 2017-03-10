@@ -16,35 +16,22 @@ var commandInit = function(context) {
 }
 
 var addGuides = function(context) {
+  initPlugin(context);
   var selectedLayers = context.selection;
-  var selectedCount = selectedLayers.count();
 
-  if (selectedCount <= 0) {
-    context.document.showMessage("Please select at least one element.");
-    return;
-  }
-
-  var layer = selectedLayers.firstObject();
-  var layerType = layer.className();
-  var hasArtboard = hasParentArtboard(context,layer);
-
-  //document.showMessage("layoutSettings: "+context.document.layoutSettings());
-  //context.document.showMessage("hasArtboard: "+hasArtboard);
-
-  if (hasArtboard < 0) {
-    context.document.showMessage("Soemthing is wrong");
-    return;
-  } else if (hasArtboard == 2) {
-    context.document.showMessage("Please select an element inside an Artboard.");
-    return;
-  } else if (isSelectionAllowed(layerType) < 0) {
-    context.document.showMessage("Currently "+layerType+" selection is not allowed.");
-    return;
-  } else if (selectedCount >= 2) {
-    context.document.showMessage("Please select single layer.");
-    return;
-  } else {
+  if (isSelectionValid(context, selectedLayers)) {
+    var layer = selectedLayers.firstObject();
     setGuides(context, layer);
+  }
+}
+
+var addLastGuides = function(context) {
+  initPlugin(context);
+  var selectedLayers = context.selection;
+
+  if (isSelectionValid(context, selectedLayers)) {
+    var layer = selectedLayers.firstObject();
+    drawGuides(context, layer, configData.guidesConfig.column, configData.guidesConfig.gutter, configData.guidesConfig.lOffset, configData.guidesConfig.rOffset);
   }
 }
 

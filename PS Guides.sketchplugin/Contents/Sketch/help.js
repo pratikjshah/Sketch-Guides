@@ -20,7 +20,6 @@ var aboutPratikShah = function(context) {
 function checkForUpdate(context) {
   initPlugin(context);
 
-    var remoteManifestUrl = "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/PS%20Guides.sketchplugin/Contents/Sketch/manifest.json";
     var remoteManifest = getRemoteJson(remoteManifestUrl);
     //context.document.showMessage("remoteManifest: " + remoteManifest.version);
     if (remoteManifest.version) {
@@ -31,7 +30,7 @@ function checkForUpdate(context) {
           showAvailableUpdateDialog(context);
         }
     } else {
-      context.document.showMessage("can not check:");
+      //context.document.showMessage("can not check:");
       showAvailableUpdateDialog(context);
     }
 }
