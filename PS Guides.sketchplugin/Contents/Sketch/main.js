@@ -15,6 +15,7 @@ var selection;
 var updateTime;
 var localDataPath;
 var configData;
+var remoteManifestUrl;
 
 // Initialise
 function initPlugin(context) {
@@ -26,18 +27,20 @@ function initPlugin(context) {
   pluginRoot = context.scriptPath.stringByDeletingLastPathComponent().stringByDeletingLastPathComponent().stringByDeletingLastPathComponent();
   localDataPath = pluginRoot + "/Contents/Resources/user.config";
   var currentVersion = context.plugin.version() + "";
-  //configData = {localUpdateTime:-1, serverUpdateTime:0, localVersion:currentVersion, localVersion:currentVersion};
-  //checkUpdate(context);
+  remoteManifestUrl = "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/PS%20Guides.sketchplugin/Contents/Sketch/manifest.json";
   configData = readData();
-  if(configData.localUpdateTime < 0) {
-    var newTime = new Date();
-    newTime.setDate(newTime.getDate() - 1);
-    configData.localUpdateTime = newTime.getTime();
-    configData.localVersion = context.plugin.version() + "";
-
-    saveData(configData);
-  }
   //context.document.showMessage(JSON.stringify(configData) + " | typeof: " + typeof(configData));
+
+  var newTime = new Date();
+  if (configData.localUpdateTime < newTime.getTime()) {
+    context.document.showMessage("check for update:");
+    var remoteManifest = getRemoteJson(remoteManifestUrl);
+    if (!remoteManifest.version || (configData.localVersion != remoteManifest.version)) {
+          context.document.showMessage("need update:");
+          //showAvailableUpdateDialog(context);
+    }
+    setUpdateCheckDayOnTomorrow();
+  }
 }
 
 // Utilities
