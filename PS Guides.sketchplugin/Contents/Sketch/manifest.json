@@ -6,7 +6,7 @@
     "homepage": "http://guides.pratikshah.website/",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "identifier": "website.pratikshah.guides",
     "commands": [
         {
