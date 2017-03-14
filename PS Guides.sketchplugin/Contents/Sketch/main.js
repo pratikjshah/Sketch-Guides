@@ -33,10 +33,11 @@ function initPlugin(context) {
 
   var newTime = new Date();
   if (configData.localUpdateTime < newTime.getTime()) {
-    context.document.showMessage("check for update:");
+    //context.document.showMessage("check for update:");
     var remoteManifest = getRemoteJson(remoteManifestUrl);
-    if (!remoteManifest.version || (configData.localVersion != remoteManifest.version)) {
-          context.document.showMessage("need update:");
+    //context.document.showMessage("remoteManifest: " + remoteManifest.version + " configData.localVersion: " + configData.localVersion);
+    if (configData.localVersion != remoteManifest.version) {
+          context.document.showMessage("📐Guides:"+ configData.localVersion + " is out of date! Please check for updates.");
           //showAvailableUpdateDialog(context);
     }
     setUpdateCheckDayOnTomorrow();
@@ -166,6 +167,13 @@ function setUpdateCheckDayOnTomorrow() {
 
 function openUrlInBrowser(url) {
     NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(url));
+}
+
+function getRemoteJson(url) {
+    var request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
+    var response = NSURLConnection.sendSynchronousRequest_returningResponse_error(request, null, null);
+    var content = NSString.alloc().initWithData_encoding(response, NSUTF8StringEncoding);
+    return JSON.parse(content);
 }
 
 function saveData(data) {
