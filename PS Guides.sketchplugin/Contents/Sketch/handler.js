@@ -19,9 +19,10 @@ var addGuides = function(context) {
   initPlugin(context);
   var selectedLayers = context.selection;
 
-  if (isSelectionValid(context, selectedLayers)) {
-    var layer = selectedLayers.firstObject();
-    setGuides(context, layer);
+  if (isSelectionValid(selectedLayers)) {
+    //var layer = selectedLayers.firstObject();
+    setGuides(selectedLayers);
+    trackEvent("DrawGuides", "addGuides", 1);
   }
 }
 
@@ -29,13 +30,16 @@ var addLastGuides = function(context) {
   initPlugin(context);
   var selectedLayers = context.selection;
 
-  if (isSelectionValid(context, selectedLayers)) {
-    var layer = selectedLayers.firstObject();
-    drawGuides(context, layer, configData.guidesConfig.column, configData.guidesConfig.gutter, configData.guidesConfig.lOffset, configData.guidesConfig.rOffset);
+  if (isSelectionValid(selectedLayers)) {
+    //var layer = selectedLayers.firstObject();
+    drawGuides(selectedLayers, configData.guidesConfig.column, configData.guidesConfig.gutter, configData.guidesConfig.lOffset, configData.guidesConfig.rOffset);
+    trackEvent("DrawGuides", "addLastGuides", 1);
   }
 }
 
 var clearGuides = function(context) {
-  removeVerticalGuides(context);
-  removeHorizontalGuides(context);
+  initPlugin(context);
+  removeVerticalGuides();
+  removeHorizontalGuides();
+  trackEvent("ClearGuides", "bothGuides", 1);
 }
