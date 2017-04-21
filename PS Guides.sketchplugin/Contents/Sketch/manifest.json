@@ -1,12 +1,12 @@
 {
-    "name": "📐Guides",
+    "name": "📐 Guides",
     "description": "One click solution for your guides problems :)",
     "author": "Pratik Shah",
     "email": "hello@pratikshah.website",
     "homepage": "http://guides.pratikshah.website/",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "1.4.1",
+    "version": "1.5.1",
     "identifier": "website.pratikshah.guides",
     "commands": [
         {
@@ -45,6 +45,13 @@
         },
         {
             "script": "help.js",
+            "handler": "collapseGroupsNArtboard",
+            "shortcut": "cmd e",
+            "name": "Collapse Groups & Artboards",
+            "identifier": "collapseGroupsNArtboard"
+        },
+        {
+            "script": "help.js",
             "handler": "reportIssue",
             "shortcut": "",
             "name": "Report issue",
@@ -70,6 +77,8 @@
             "addGuides",
             "addLastGuides",
             "clearGuides",
+            "-",
+            "collapseGroupsNArtboard",
             "-",
             "reportIssue",
             "checkForUpdate",

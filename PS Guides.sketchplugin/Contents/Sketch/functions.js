@@ -8,9 +8,7 @@ license: MIT
 
 @import "main.js"
 
-function setGuides(context, layer) {
-  // Get all the things
-  initPlugin(context);
+function setGuides(selectedLayers) {
 
   // Load the window
   var window = createGuidesWindow(configData.guidesConfig.column, configData.guidesConfig.gutter, configData.guidesConfig.lOffset, configData.guidesConfig.rOffset);
@@ -28,20 +26,25 @@ function setGuides(context, layer) {
     var lOffset = parseInt(lOffsetTextfield.stringValue().replace(/[^0-9.,]/g, ''));
     var rOffset = parseInt(rOffsetTextfield.stringValue().replace(/[^0-9.,]/g, ''));
 
-    drawGuides(context, layer, column, gutter, lOffset, rOffset);
+    drawGuides(selectedLayers, column, gutter, lOffset, rOffset);
 
   }
 }
 
-function getLayerProps (layer) {
-  var rect = layer.absoluteRect();
-  return {
-    x: Math.round(rect.x()),
-    y: Math.round(rect.y()),
-    width: Math.round(rect.width()),
-    height: Math.round(rect.height()),
-    maxX: Math.round(rect.x() + rect.width()),
-    maxY: Math.round(rect.y() + rect.height()),
+function getLayerProps (selectedLayers) {
+  var rect;
+  var selectedCount = selectedLayers.count();
+  if (selectedCount == 1) {
+    var layer = selectedLayers.firstObject();
+    rect = layer.absoluteRect();
+    return {
+      x: Math.round(rect.x()),
+      y: Math.round(rect.y()),
+      width: Math.round(rect.width()),
+      height: Math.round(rect.height()),
+      maxX: Math.round(rect.x() + rect.width()),
+      maxY: Math.round(rect.y() + rect.height()),
+    }
   }
 }
 
@@ -50,50 +53,54 @@ function addVGuide(position) {
   artBoardHRuler.addGuideWithValue(position);
 }
 
-function drawGuides(context, layer, column, gutter, lOffset, rOffset) {
-  //context.document.showMessage("IN drawGuides");
+function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
 
-  // Clear old guides
-  clearGuides(context);
-/*
-  if((column > 0) && (gutter > 0) && (lOffset >= 0) && (rOffset >= 0)) {
-    //context.document.showMessage("Please provide valid inputs");
-    context.document.showMessage("column: "+ column+"gutter: "+ gutter+"lOffset: "+ lOffset+"rOffset: "+ rOffset);
-    return;
-  }
-*/
-  var layerProps = getLayerProps(layer);
+  var selectedLayerProps = getLayerProps(selectedLayers);
 
-  //context.document.showMessage("Column: "+column+" | Gutter: "+gutter + " | Layer: "+JSON.stringify(layerProps));
-  var columnWidth = Math.round((layerProps.width - lOffset - rOffset - Math.round((gutter*(column-1))))/column);
+  //globalContext.document.showMessage("Column: "+column+" | Gutter: "+gutter + " | Layer: "+JSON.stringify(selectedLayerProps));
+  var columnWidth = Math.round((selectedLayerProps.width - lOffset - rOffset - Math.round((gutter*(column-1))))/column);
   var artboardX = artboard.frame().x();
-  var startPosition = ((artboardX - layerProps.x)*-1) + lOffset;
+  var startPosition = ((artboardX - selectedLayerProps.x)*-1) + lOffset;
 
-  //context.document.showMessage("columnWidth: "+columnWidth+" | startPosition: "+startPosition);
+  //globalContext.document.showMessage("columnWidth: "+columnWidth+" | startPosition: "+startPosition);
 
-  var frameCenter = startPosition + Math.round(layerProps.width / 2);
+  var frameCenter = startPosition + Math.round(selectedLayerProps.width / 2);
   var gutterCount = column + 1;
-  var spaceForColumn = layerProps.width - (gutterCount * gutter);
+  var spaceForColumn = selectedLayerProps.width - (gutterCount * gutter);
   var rulerCount = column*2 + 2;
-  var drawGuideAt = frameCenter - Math.round(layerProps.width / 2) - gutter;
+  var drawGuideAt = frameCenter - Math.round(selectedLayerProps.width / 2) - gutter;
   var total = (columnWidth*column)+(gutter*(gutterCount-2));
-  //context.document.showMessage("Total: "+total+" | selection width: "+layerProps.width);
+  //globalContext.document.showMessage("Total: "+total+" | selection width: "+selectedLayerProps.width);
 
-  if (total != parseInt(layerProps.width)) {
-    var message = "It is not possible to divide selected width of "+layerProps.width+" into "+column+" equal columns and gutter of "+gutter;
+  if (total != parseInt(selectedLayerProps.width)) {
+    var message = "It is not possible to divide selected width of "+selectedLayerProps.width+" into "+column+" equal columns and gutter of "+gutter;
     var confirmButtonText = "Change config";
-    var cancelButtonText = "Cancel";
+    var cancelButtonText = "Draw anyway";
     //createErrorWindow(message,confirmButtonText,cancelButtonText);
     var errorWindow = createErrorWindow(message,confirmButtonText,cancelButtonText);
     var errorAlert = errorWindow[0];
     // When “Ok” is clicked
     var errorResponse = errorAlert.runModal();
+    //log("errorResponse: "+errorResponse);
+    //globalContext.showMessage("errorResponse: "+errorResponse);
     if (errorResponse == "1000") {
-      addGuides(context);
+      addGuides(globalContext);
       return;
+    } else if (errorResponse == "1001") {
+      plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOffset);
     }
     return;
   }
+
+  plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOffset);
+}
+
+function plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOffset) {
+  // Clear old guides
+  //removeAllGuides();
+  //clearGuides(globalContext);
+  removeVerticalGuides();
+  removeHorizontalGuides();
 
   //addVGuide(drawGuideAt);
   for (var i=0; i < rulerCount; i++) {
@@ -111,23 +118,19 @@ function drawGuides(context, layer, column, gutter, lOffset, rOffset) {
   configData.guidesConfig.rOffset = rOffset;
   saveData(configData);
 
-  if (!context.document.isRulersVisible()) {
-    context.document.toggleRulers();
+  if (!globalContext.document.isRulersVisible()) {
+    globalContext.document.toggleRulers();
   }
 }
 
-function removeAllGuides(context) {
-  removeHorizontalGuides(context);
-  removeVerticalGuides(context);
-}
-function removeHorizontalGuides(context) {
-  var doc = context.document;
+function removeHorizontalGuides() {
+  var doc = globalContext.document;
   var page = doc.currentPage();
   var artBoard = page.currentArtboard();
   removeGuides(artBoard.horizontalRulerData());
 }
-function removeVerticalGuides(context) {
-  var doc = context.document;
+function removeVerticalGuides() {
+  var doc = globalContext.document;
   var page = doc.currentPage();
   var artBoard = page.currentArtboard();
   removeGuides(artBoard.verticalRulerData());
@@ -157,7 +160,7 @@ function isValidInput(data) {
   return 0;
 }
 
-function hasParentArtboard(context, layer) {
+function hasParentArtboard(layer) {
   // Check if any layers were passed in to the function
   if (layer == undefined) {
 		return -1;
@@ -181,35 +184,44 @@ function hasParentArtboard(context, layer) {
   return -2;
 }
 
-function isSelectionValid(context, selectedLayers) {
-  //context.document.showMessage("IN isSelectionValid");
+function showErrorAlertWithSound(msg) {
+  var errorAlertFile = plugin.urlForResourceNamed("alert.mp3").path();
+  var sound = NSSound.alloc().initWithContentsOfFile_byReference(errorAlertFile,true);
+  sound.play();
+  globalContext.document.showMessage(msg);
+}
+
+function isSelectionValid(selectedLayers) {
+  //globalContext.document.showMessage("IN isSelectionValid");
   var selectedCount = selectedLayers.count();
+  var msg = "";
 
   if (selectedCount <= 0) {
-    context.document.showMessage("Please select at least one element.");
+    msg = "Please select at least one element.";
+    showErrorAlertWithSound(msg);
     return false;
   }
 
   var layer = selectedLayers.firstObject();
   var layerType = layer.className();
-  var hasArtboard = hasParentArtboard(context,layer);
-
-  //document.showMessage("layoutSettings: "+context.document.layoutSettings());
-  //context.document.showMessage("hasArtboard: "+hasArtboard);
+  var hasArtboard = hasParentArtboard(layer);
 
   if (hasArtboard < 0) {
-    context.document.showMessage("Soemthing is wrong");
+    msg = "Soemthing is wrong";
+    showErrorAlertWithSound(msg);
     return false;
   } else if (hasArtboard == 2) {
-    context.document.showMessage("Please select an element inside an Artboard.");
+    msg = "Please select an element inside an Artboard.";
+    showErrorAlertWithSound(msg);
     return false;
   } else if (isSelectionAllowed(layerType) < 0) {
-    context.document.showMessage("Currently "+layerType+" selection is not allowed.");
+    msg = "Currently "+layerType+" selection is not allowed.";
+    showErrorAlertWithSound(msg);
     return false;
-  } else if (selectedCount >= 2) {
-    context.document.showMessage("Please select single layer.");
-    return false;
-  } else {
+  } else if(selectedCount > 1) {
+    msg = "Please select single layer";
+    showErrorAlertWithSound(msg);
+  }else {
     return true;
   }
 }

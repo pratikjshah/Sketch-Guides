@@ -22,15 +22,36 @@ function checkForUpdate(context) {
 
     var remoteManifest = getRemoteJson(remoteManifestUrl);
     //context.document.showMessage("remoteManifest: " + remoteManifest.version);
+    trackEvent("checkForUpdate", "manualCheckForUpdate", 1);
     if (remoteManifest.version) {
         if (configData.localVersion == remoteManifest.version) {
-          context.document.showMessage("🤘Yo🤘! PS: Guides " + configData.localVersion + " is currently the newest version available.");
+          globalContext.document.showMessage("🤘Yo🤘! PS: Guides " + configData.localVersion + " is currently the newest version available.");
         } else {
-          //context.document.showMessage("need update:");
-          showAvailableUpdateDialog(context);
+          //globalContext.document.showMessage("need update:");
+          showAvailableUpdateDialog();
         }
     } else {
-      //context.document.showMessage("can not check:");
-      showAvailableUpdateDialog(context);
+      //globalContext.document.showMessage("can not check:");
+      showAvailableUpdateDialog();
     }
+}
+
+
+var collapseGroupsNArtboard = function (context) {
+  initPlugin(context);
+  var msg = "Failed to Collapse Groups & Artboards!";
+
+  //var doc = context.document;
+  var currentArtboard = doc.findCurrentArtboardGroup();
+  doc.currentPage().deselectAllLayers();
+
+  var action = doc.actionsController().actionForID("MSCollapseAllGroupsAction").collapseAllGroups(nil);
+  trackEvent("TopUpEvents", "collapseGroupsNArtboard", 1);
+
+  if(action.validate()) {
+    action.doPerformAction(nil);
+    currentArtboard.select_byExpandingSelection(true, false);
+  } else {
+    showErrorAlertWithSound(msg);
+  }
 }

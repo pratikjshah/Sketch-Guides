@@ -7,6 +7,7 @@ license: MIT
 ----------------------------------------------------------*/
 
 // Needed globally
+var globalContext;
 var doc;
 var page;
 var artboard;
@@ -19,25 +20,27 @@ var remoteManifestUrl;
 
 // Initialise
 function initPlugin(context) {
-  doc = context.document;
+  globalContext = context;
+  doc = globalContext.document;
   page = doc.currentPage();
   artboard = page.currentArtboard();
-  plugin = context.plugin;
-  selection = context.selection;
-  pluginRoot = context.scriptPath.stringByDeletingLastPathComponent().stringByDeletingLastPathComponent().stringByDeletingLastPathComponent();
+  plugin = globalContext.plugin;
+  selection = globalContext.selection;
+  pluginRoot = globalContext.scriptPath.stringByDeletingLastPathComponent().stringByDeletingLastPathComponent().stringByDeletingLastPathComponent();
   localDataPath = pluginRoot + "/Contents/Resources/user.config";
-  var currentVersion = context.plugin.version() + "";
+  var currentVersion = globalContext.plugin.version() + "";
   remoteManifestUrl = "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/PS%20Guides.sketchplugin/Contents/Sketch/manifest.json";
   configData = readData();
-  //context.document.showMessage(JSON.stringify(configData) + " | typeof: " + typeof(configData));
+  //globalContext.document.showMessage(JSON.stringify(configData) + " | typeof: " + typeof(configData));
 
   var newTime = new Date();
   if (configData.localUpdateTime < newTime.getTime()) {
-    //context.document.showMessage("check for update:");
+    //globalContext.document.showMessage("check for update:");
+    trackEvent("checkForUpdate", "dailyCheckForUpdate", 1);
     var remoteManifest = getRemoteJson(remoteManifestUrl);
-    //context.document.showMessage("remoteManifest: " + remoteManifest.version + " configData.localVersion: " + configData.localVersion);
+    //globalContext.document.showMessage("remoteManifest: " + remoteManifest.version + " configData.localVersion: " + configData.localVersion);
     if (configData.localVersion != remoteManifest.version) {
-          context.document.showMessage("📐Guides:"+ configData.localVersion + " is out of date! Please check for updates.");
+          globalContext.document.showMessage("📐 Guides:"+ configData.localVersion + " is out of date! Please check for updates.");
           //showAvailableUpdateDialog(context);
     }
     setUpdateCheckDayOnTomorrow();
@@ -144,16 +147,16 @@ function createGuidesWindow(column, gutter, lOffset, rOffset) {
   return [alert];
 }
 
-function showAvailableUpdateDialog(context) {
+function showAvailableUpdateDialog() {
   var window = createDownloadWindow();
   var alert = window[0];
   // When “Ok” is clicked
   var response = alert.runModal();
   if (response == "1000") {
-    //context.document.showMessage("Go to download");
+    //globalContext.document.showMessage("Go to download");
     openUrlInBrowser("http://guides.pratikshah.website/download.php");
   } else {
-    //context.document.showMessage("Check later");
+    //globalContext.document.showMessage("Check later");
     setUpdateCheckDayOnTomorrow();
   }
 }
@@ -167,13 +170,31 @@ function setUpdateCheckDayOnTomorrow() {
 
 function openUrlInBrowser(url) {
     NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(url));
+    trackEvent("openUrlInBrowser", url, 1);
 }
 
 function getRemoteJson(url) {
     var request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
     var response = NSURLConnection.sendSynchronousRequest_returningResponse_error(request, null, null);
     var content = NSString.alloc().initWithData_encoding(response, NSUTF8StringEncoding);
-    return JSON.parse(content);
+    var result = null;
+    if(content) {
+      result = JSON.parse(content);
+    }
+    //log("content:" + content + " |");
+    return result;
+}
+
+function trackEvent(action, label, value) {
+    var baseURL = "http://guides.pratikshah.website/trackEvents.php";
+    baseURL = "https://www.google-analytics.com/collect?v=1&t=event&tid=UA-64818389-6&cid=e4567790-98b3-4f6d-85b3-6c5345d9ad00";
+    var version = configData.localVersion;
+
+    var trackingURL = baseURL + "&ec=PSGuides-" + version + "&ea=" + action + "&el=" + label + "&ev=" + value;
+    //globalContext.document.showMessage("URL: " + trackingURL);
+    getRemoteJson(trackingURL);
+    //globalContext.document.showMessage("URL: " + trackingURL);
+
 }
 
 function saveData(data) {
