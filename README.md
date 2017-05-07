@@ -12,7 +12,7 @@ It is tedious to create guides for a layer using sketch's default layout setting
 
 1. [Download the ZIP ⬇️](http://guides.pratikshah.website/download.php)
 2. Unzip, open the folder and double click `PS Guides.sketchplugin`
-3. You are good to go🤘! Just press [cmd + shift + \]
+3. 🤘Done, you are good to go! Just press `[cmd + shift + \]`
 
 ## Change the keyboard shortcuts
 
