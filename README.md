@@ -2,7 +2,7 @@
 # 📐Guides: Sketch plugin
 
 Quickly generate Guides for a selected element.
-It is tedious to create guides for a layer using sketch's default layout setting, so this my attempt to ease that effort.
+It is tedious to create guides for a layer using sketch's default layout setting, so this is my attempt to ease that effort.
 
 ![The add guides view](http://guides.pratikshah.website/setup-guides.png)
 
@@ -10,9 +10,9 @@ It is tedious to create guides for a layer using sketch's default layout setting
 
 *PS-Guides supports Sketch 3.8+* ([why?] Because I haven't tested in older versions! 😛)
 
-1. [Download the ZIP⬇️](http://guides.pratikshah.website/download.php)
+1. [Download the ZIP ⬇️](http://guides.pratikshah.website/download.php)
 2. Unzip, open the folder and double click `PS Guides.sketchplugin`
-3. Restart Sketch
+3. You are good to go🤘! Just press [cmd + shift + \]
 
 ## Change the keyboard shortcuts
 
@@ -23,7 +23,7 @@ If you’re not a fan of the keyboard shortcuts 📐-Guides ships with, you can 
 ## Notes
 
 - Material and/or Bootstrap column layout is the most widely used standard for designs.
-- This came to be because I felt that there isn't a clean solution available to do grids for layers (and I had no plans on a Weekend).
+- This came to me because I felt that there isn't a clean solution available to do grids for layers (and I had no plans on a Weekend).
 
 ## License
 
@@ -33,6 +33,7 @@ PS-Guides is released under the MIT [`LICENSE`](https://github.com/pratikjshah/P
 
 PS-Guides is made by [Pratik Shah](http://pratikshah.website).
 
+- Website: [http://pratikshah.website](http://pratikshah.website)
 - Dribbble: [https://dribbble.com/pratikshah](https://dribbble.com/pratikshah)
 - LinkedIn: [https://in.linkedin.com/in/shahpratikj](https://in.linkedin.com/in/shahpratikj)
 - Email: [hello@pratikshah.website](hello@pratikshah.website)
