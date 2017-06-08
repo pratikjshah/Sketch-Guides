@@ -1,13 +1,16 @@
 {
     "name": "📐 Guides",
-    "description": "One click solution for your guides problems :)",
+    "description": "Solution for your guides problems in Sketch :)",
     "author": "Pratik Shah",
     "email": "hello@pratikshah.website",
     "homepage": "http://guides.pratikshah.website/",
+    "appcast": "https://github.com/pratikjshah/PS-Guides/appcast.xml",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "identifier": "website.pratikshah.guides",
+    "compatibleVersion": "40",
+    "bundleVersion": "1",
     "commands": [
         {
             "name": "Init",
