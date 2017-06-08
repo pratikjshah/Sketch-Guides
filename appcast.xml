@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>📐 Guides</title>
+        <link>https://github.com/pratikjshah/PS-Guides/appcast.xml</link>
+        <description>Solution for your guides problems in Sketch :)</description>
+        <language>en</language>
+
+        <item>
+            <title>v1.5.2</title>
+            <description>
+                <![CDATA[
+                  <h2>For Sketch 45</h2>
+                    <ul><li>Added support for Sketch 45 plugin update system.</li>
+<li>Added Collapse Groups and folder feature</li></ul>
+                ]]>
+            </description>
+            <pubDate>Fri, 09 Jun 2017 20:30:24 GMT</pubDate>
+            <enclosure
+                url="https://github.com/pratikjshah/PS-Guides/archive/v1.5.2.zip"
+                sparkle:version="1.5.2"
+                type="application/octet-stream"/>
+        </item>
+
+        <item>
+            <title>v1.5.1</title>
+            <description>
+                <![CDATA[
+                    <h2>For Sketch 43.x</h2>
+                ]]>
+            </description>
+            <pubDate>Sat, 22 Apr 2017 23:05:28 GMT</pubDate>
+            <enclosure
+                url="https://github.com/pratikjshah/PS-Guides/archive/v1.5.1.zip"
+                sparkle:version="1.5.1"
+                type="application/octet-stream"/>
+        </item>
+
+    </channel>
+</rss>
