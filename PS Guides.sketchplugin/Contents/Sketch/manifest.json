@@ -4,7 +4,7 @@
     "author": "Pratik Shah",
     "email": "hello@pratikshah.website",
     "homepage": "http://guides.pratikshah.website/",
-    "appcast": "https://github.com/pratikjshah/PS-Guides/appcast.xml",
+    "appcast": "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/appcast.xml",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "version": "1.5.2",
