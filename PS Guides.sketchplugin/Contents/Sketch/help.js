@@ -36,14 +36,21 @@ function checkForUpdate(context) {
     }
 }
 
+function deselectAllLayers(context) {
+    if(context.selection.count()) {
+      context.selection.firstObject().select_byExtendingSelection(false, false);
+    }
+}
+
 
 var collapseGroupsNArtboard = function (context) {
   initPlugin(context);
   var msg = "Failed to Collapse Groups & Artboards!";
 
-  //var doc = context.document;
+  var doc = context.document;
   var currentArtboard = doc.findCurrentArtboardGroup();
-  doc.currentPage().deselectAllLayers();
+  //doc.currentPage().deselectAllLayers();
+  deselectAllLayers(context);
 
   var action = doc.actionsController().actionForID("MSCollapseAllGroupsAction").collapseAllGroups(nil);
   trackEvent("TopUpEvents", "collapseGroupsNArtboard", 1);
