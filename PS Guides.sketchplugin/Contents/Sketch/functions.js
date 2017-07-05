@@ -118,8 +118,13 @@ function plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOf
   configData.guidesConfig.rOffset = rOffset;
   saveData(configData);
 
+  /*
   if (!globalContext.document.isRulersVisible()) {
     globalContext.document.toggleRulers();
+  }
+  */
+  if (!doc.isRulersVisible()) {
+    globalContext.document.actionsController().actionForID("MSToggleRulersAction").toggleRulers(nil);
   }
 }
 
