@@ -4,7 +4,7 @@
 Quickly generate Guides for a selected element.
 It is tedious to create guides for a layer using sketch's default layout setting, so this is my attempt to ease that effort.
 
-![The add guides view](http://guides.pratikshah.website/setup-guides.png)
+![See 📐Guides in action!](http://guides.pratikshah.website/ps-guides-example.png?t=21)
 
 ## Install
 
