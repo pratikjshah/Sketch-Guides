@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>📐 Guides</title>
+        <title>📐 Sketch Guides</title>
         <link>https://github.com/pratikjshah/PS-Guides/appcast.xml</link>
         <description>Solution for your guides problems in Sketch :)</description>
         <language>en</language>
+
+        <item>
+            <title>v2.0.1</title>
+            <description>
+                <![CDATA[
+                  <h2>For Sketch 52</h2>
+                    <ul><li>Added support for Dark mode.</li>
+<li>Added TAB key navigation between fields</li>
+<li>Smart Guides: Suggest stretching or shrinking selection area to achieve pixel perfect grids.</li>
+<li>Performance improvements and bug fixing</li></ul>
+                ]]>
+            </description>
+            <pubDate>Thu, 27 Dec 2018 21:54:24 GMT</pubDate>
+            <enclosure
+                url="https://github.com/pratikjshah/PS-Guides/archive/v2.0.1.zip"
+                sparkle:version="2.0.1"
+                type="application/octet-stream"/>
+        </item>
 
         <item>
             <title>v1.6.1</title>
