@@ -137,6 +137,13 @@ function createGuidesWindow(column, gutter, lOffset, rOffset) {
   view.addSubview(lOffsetTextfield);
   view.addSubview(rOffsetTextfield);
 
+  // Allow tab to switch between inputs
+  alert.alert().window().setInitialFirstResponder(columnTextfield);
+  columnTextfield.setNextKeyView(gutterTextfield);
+  gutterTextfield.setNextKeyView(lOffsetTextfield);
+  lOffsetTextfield.setNextKeyView(rOffsetTextfield);
+  rOffsetTextfield.setNextKeyView(columnTextfield);
+
   // Fill inputs
   var props = utils.getLayerProps();
   columnTextfield.setStringValue(''+column);
@@ -186,13 +193,33 @@ function getRemoteJson(url) {
 }
 
 function trackEvent(action, label, value) {
-    var baseURL = "http://guides.pratikshah.website/trackEvents.php";
-    baseURL = "https://www.google-analytics.com/collect?v=1&t=event&tid=UA-64818389-6&cid=e4567790-98b3-4f6d-85b3-6c5345d9ad00";
+    var kUUIDKey = 'google.analytics.uuid'
+    var uuid = NSUserDefaults.standardUserDefaults().objectForKey(kUUIDKey)
+    if (!uuid) {
+      uuid = NSUUID.UUID().UUIDString()
+      NSUserDefaults.standardUserDefaults().setObject_forKey(uuid, kUUIDKey)
+    }
+
+    var tid = "UA-64818389-6";
+    var cid = uuid;
+    //cid = "e4567790-98b3-4f6d-85b3-6c5345d9ad00";
+    var ds = "Sketch " + NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
+    /*var an = globalContext.plugin.name();
+    var aid = globalContext.plugin.identifier();
+    var av = globalContext.plugin.version();*/
+
+    var baseURL = "https://www.google-analytics.com/debug/collect?v=1&ds=" + ds + "&t=event&tid=" + tid + "&cid=" + cid;
+    baseURL = "https://www.google-analytics.com/collect?v=1&ds=" + ds + "&t=event&tid=" + tid + "&cid=" + cid;
     var version = configData.localVersion;
 
     var trackingURL = baseURL + "&ec=PSGuides-" + version + "&ea=" + action + "&el=" + label + "&ev=" + value;
     //globalContext.document.showMessage("URL: " + trackingURL);
-    getRemoteJson(trackingURL);
+    //console.log("URL: " + trackingURL);
+    var url = NSURL.URLWithString(NSString.stringWithFormat(trackingURL))
+    if (url) {
+      NSURLSession.sharedSession().dataTaskWithURL(url).resume()
+    }
+    //getRemoteJson(trackingURL);
     //globalContext.document.showMessage("URL: " + trackingURL);
 
 }
