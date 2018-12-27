@@ -70,9 +70,23 @@ function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
   var rulerCount = column*2 + 2;
   var drawGuideAt = frameCenter - Math.round(selectedLayerProps.width / 2) - gutter;
   var total = (columnWidth*column)+(gutter*(gutterCount-2));
-  //globalContext.document.showMessage("Total: "+total+" | selection width: "+selectedLayerProps.width);
+  //globalContext.document.showMessage("Total: "+total+" | selection width: "+selectedLayerProps.width+" | gap: " + (selectedLayerProps.width - total));
 
   if (total != parseInt(selectedLayerProps.width)) {
+
+    var count = total - selectedLayerProps.width;
+    var action = "⬅️stretched➡️";
+    if (count < 0) {
+      count = count*-1;
+      action = "➡️shrunk⬅️";
+    }
+
+    var msg = "Guides area was " + action + " by "+ count +"px on left!";
+
+    globalContext.document.showMessage(msg);
+  }
+
+  /*if (total != parseInt(selectedLayerProps.width)) {
     var message = "It is not possible to divide selected width of "+selectedLayerProps.width+" into "+column+" equal columns and gutter of "+gutter;
     var confirmButtonText = "Change config";
     var cancelButtonText = "Draw anyway";
@@ -90,7 +104,7 @@ function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
       plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOffset);
     }
     return;
-  }
+  }*/
 
   plotGuides(drawGuideAt,column,gutter,columnWidth,rulerCount,lOffset,rOffset);
 }
@@ -147,7 +161,7 @@ function removeGuides(guideData) {
 }
 
 function isSelectionAllowed(selectionType) {
-  var allowedTypes = ["MSShapeGroup", "MSTextLayer", "MSLayerGroup", "MSArtboardGroup", "MSBitmapLayer", "MSSliceLayer", "MSSymbolInstance"];
+  var allowedTypes = ["MSShapeGroup", "MSRectangleShape", "MSOvalShape", "MSTriangleShape", "MSShapePathLayer", "MSStarShape", "MSPolygonShape", "MSHotspotLayer", "MSTextLayer", "MSLayerGroup", "MSArtboardGroup", "MSSymbolMaster", "MSBitmapLayer", "MSSliceLayer", "MSSymbolInstance"];
   //var index = allowedTypes.indexOf(selectionType);
   //return index;
 
@@ -178,7 +192,7 @@ function hasParentArtboard(layer) {
     if (className == 'MSPage') {
       //If it's an MSPage, then there was no artboard selected to begin with
       return 2;
-    } else if (className == 'MSArtboardGroup') {
+    } else if (className == 'MSArtboardGroup' || className == 'MSSymbolMaster') {
       //If it's an MSArtboardGroup, we've found it and we can just return the currentLayer.
       return 1;
     } else {

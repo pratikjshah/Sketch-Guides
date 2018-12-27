@@ -1,5 +1,5 @@
 {
-    "name": "📐 Guides",
+    "name": "📐 Sketch Guides",
     "description": "Solution for your guides problems in Sketch :)",
     "author": "Pratik Shah",
     "email": "hello@pratikshah.website",
@@ -7,8 +7,9 @@
     "appcast": "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/appcast.xml",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "1.6.1",
+    "version": "2.0.1",
     "identifier": "website.pratikshah.guides",
+    "icon": "PS-Guides.png",
     "compatibleVersion": "40",
     "bundleVersion": "1",
     "commands": [
