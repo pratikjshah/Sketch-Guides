@@ -181,15 +181,63 @@ function openUrlInBrowser(url) {
 }
 
 function getRemoteJson(url) {
-    var request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
+    /*var request = NSURLRequest.requestWithURL(NSURL.URLWithString(url));
     var response = NSURLConnection.sendSynchronousRequest_returningResponse_error(request, null, null);
     var content = NSString.alloc().initWithData_encoding(response, NSUTF8StringEncoding);
     var result = null;
     if(content) {
       result = JSON.parse(content);
-    }
+    }*/
+    var result = null;
+    result = networkRequest([""+url]);
     //log("content:" + content + " |");
     return result;
+}
+
+function tryParseJSON (jsonString){
+  try {
+    var o = JSON.parse(jsonString);
+
+    // Handle non-exception-throwing cases:
+    // Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
+    // but... JSON.parse(null) returns 'null', and typeof null === "object",
+    // so we must check for that, too.
+    if (o && typeof o === "object" && o !== null) {
+      return o;
+    }
+  }
+  catch (e) { }
+
+  return false;
+}
+
+function networkRequest(args) {
+  var task = NSTask.alloc().init();
+  task.setLaunchPath("/usr/bin/curl");
+  task.setArguments(args);
+  var outputPipe = [NSPipe pipe];
+  [task setStandardOutput:outputPipe];
+  task.launch();
+  var responseData = [[outputPipe fileHandleForReading] readDataToEndOfFile];
+  var garesponse = "<47494638 39610100 010080ff 00ffffff 0000002c 00000000 01000100 00020244 01003b>";
+  if (responseData == garesponse) {
+      //log("it works");
+      return true;
+  } else {
+    var responseString = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]];
+    var parsed = tryParseJSON(responseString);
+    if(!parsed) {
+      /*log("Error invoking curl");
+      log("args:");
+      log(args);
+      log("responseData");
+      log(responseData);
+      log("responseString");
+      log(responseString);*/
+      throw "Error communicating with server"
+    }
+    return parsed;
+  }
 }
 
 function trackEvent(action, label, value) {
@@ -203,7 +251,7 @@ function trackEvent(action, label, value) {
     var tid = "UA-64818389-6";
     var cid = uuid;
     //cid = "e4567790-98b3-4f6d-85b3-6c5345d9ad00";
-    var ds = "Sketch " + NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
+    var ds = "Sketch-" + NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
     /*var an = globalContext.plugin.name();
     var aid = globalContext.plugin.identifier();
     var av = globalContext.plugin.version();*/
@@ -215,11 +263,11 @@ function trackEvent(action, label, value) {
     var trackingURL = baseURL + "&ec=PSGuides-" + version + "&ea=" + action + "&el=" + label + "&ev=" + value;
     //globalContext.document.showMessage("URL: " + trackingURL);
     //console.log("URL: " + trackingURL);
-    var url = NSURL.URLWithString(NSString.stringWithFormat(trackingURL))
+    /*var url = NSURL.URLWithString(NSString.stringWithFormat(trackingURL))
     if (url) {
       NSURLSession.sharedSession().dataTaskWithURL(url).resume()
-    }
-    //getRemoteJson(trackingURL);
+    }*/
+    getRemoteJson(trackingURL);
     //globalContext.document.showMessage("URL: " + trackingURL);
 
 }
