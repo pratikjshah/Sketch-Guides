@@ -74,7 +74,7 @@ function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
 
   if (total != parseInt(selectedLayerProps.width)) {
 
-    var count = total - selectedLayerProps.width;
+    var count = total + lOffset + rOffset - selectedLayerProps.width;
     var action = "⬅️stretched➡️";
     if (count < 0) {
       count = count*-1;
