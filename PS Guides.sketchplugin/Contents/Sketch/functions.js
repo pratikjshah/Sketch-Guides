@@ -81,7 +81,7 @@ function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
       action = "➡️shrunk⬅️";
     }
 
-    var msg = "Guides area was " + action + " by "+ count +"px on left!";
+    var msg = "Guides area was " + action + " by "+ count +"px on right!";
 
     globalContext.document.showMessage(msg);
   }
