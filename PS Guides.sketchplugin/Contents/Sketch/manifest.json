@@ -7,7 +7,7 @@
     "appcast": "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/appcast.xml",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "identifier": "website.pratikshah.guides",
     "icon": "PS-Guides.png",
     "compatibleVersion": "40",
