@@ -83,7 +83,9 @@ function drawGuides(selectedLayers, column, gutter, lOffset, rOffset) {
 
     var msg = "Guides area was " + action + " by "+ count +"px on right!";
 
-    globalContext.document.showMessage(msg);
+    if (count != 0) {
+      globalContext.document.showMessage(msg);
+    }
   }
 
   /*if (total != parseInt(selectedLayerProps.width)) {
