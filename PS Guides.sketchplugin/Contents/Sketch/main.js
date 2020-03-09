@@ -38,10 +38,13 @@ function initPlugin(context) {
     //globalContext.document.showMessage("check for update:");
     trackEvent("checkForUpdate", "dailyCheckForUpdate", 1);
     var remoteManifest = getRemoteJson(remoteManifestUrl);
+    var localVersion = globalContext.plugin.version();
     //globalContext.document.showMessage("remoteManifest: " + remoteManifest.version + " configData.localVersion: " + configData.localVersion);
-    if (configData.localVersion != remoteManifest.version) {
-          globalContext.document.showMessage("📐 Guides:"+ configData.localVersion + " is out of date! Please check for updates.");
-          //showAvailableUpdateDialog(context);
+    if (localVersion != remoteManifest.version) {
+          globalContext.document.showMessage("📐 Guides:"+ localVersion + " is out of date! Please check for updates.");
+          trackEvent("outDatedAlert", "dailyCheckForUpdate", 1);
+          // console.log("📐 Guides:"+ configData.localVersion + " is out of date! Please check for updates.");
+          // showAvailableUpdateDialog(context);
     }
     setUpdateCheckDayOnTomorrow();
   }
@@ -241,6 +244,7 @@ function networkRequest(args) {
 }
 
 function trackEvent(action, label, value) {
+  /*
     var kUUIDKey = 'google.analytics.uuid'
     var uuid = NSUserDefaults.standardUserDefaults().objectForKey(kUUIDKey)
     if (!uuid) {
@@ -252,9 +256,9 @@ function trackEvent(action, label, value) {
     var cid = uuid;
     //cid = "e4567790-98b3-4f6d-85b3-6c5345d9ad00";
     var ds = "Sketch-" + NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
-    /*var an = globalContext.plugin.name();
-    var aid = globalContext.plugin.identifier();
-    var av = globalContext.plugin.version();*/
+    // var an = globalContext.plugin.name();
+    // var aid = globalContext.plugin.identifier();
+    // var av = globalContext.plugin.version();
 
     var baseURL = "https://www.google-analytics.com/debug/collect?v=1&ds=" + ds + "&t=event&tid=" + tid + "&cid=" + cid;
     baseURL = "https://www.google-analytics.com/collect?v=1&ds=" + ds + "&t=event&tid=" + tid + "&cid=" + cid;
@@ -262,13 +266,71 @@ function trackEvent(action, label, value) {
 
     var trackingURL = baseURL + "&ec=PSGuides-" + version + "&ea=" + action + "&el=" + label + "&ev=" + value;
     //globalContext.document.showMessage("URL: " + trackingURL);
-    //console.log("URL: " + trackingURL);
-    /*var url = NSURL.URLWithString(NSString.stringWithFormat(trackingURL))
-    if (url) {
-      NSURLSession.sharedSession().dataTaskWithURL(url).resume()
-    }*/
+    // console.log("URL: " + trackingURL);
+    // var url = NSURL.URLWithString(NSString.stringWithFormat(trackingURL))
+    // if (url) {
+    //   NSURLSession.sharedSession().dataTaskWithURL(url).resume()
+    // }
     getRemoteJson(trackingURL);
     //globalContext.document.showMessage("URL: " + trackingURL);
+    */
+    
+
+  var trackingID = "UA-64818389-6";
+  var userDefaults = NSUserDefaults.standardUserDefaults();
+
+  var uuidKey = "google.analytics.uuid";
+  var uuid = userDefaults.objectForKey(uuidKey);
+  if (!uuid) {
+      uuid = NSUUID.UUID().UUIDString();
+      userDefaults.setObject_forKey(uuid, uuidKey);
+      userDefaults.synchronize();
+  }
+
+  var appName = encodeURI(globalContext.plugin.name()),
+      appId = globalContext.plugin.identifier(),
+      appVersion = globalContext.plugin.version();
+
+  var url = "https://www.google-analytics.com/collect?v=1";
+  // Tracking ID
+  url += "&tid=" + trackingID;
+  // Source
+  url += "&ds=sketch" + MSApplicationMetadata.metadata().appVersion;
+  // Client ID
+  url += "&cid=" + uuid;
+  // User GEO location
+  url += "&geoid=" + NSLocale.currentLocale().countryCode();
+  // User language
+  url += "&ul=" + NSLocale.currentLocale().localeIdentifier().toLowerCase();
+  // pageview, screenview, event, transaction, item, social, exception, timing
+  url += "&t=event";
+  // App Name
+  url += "&an=" + appName;
+  // App ID
+  url += "&aid=" + appId;
+  // App Version
+  url += "&av=" + appVersion;
+  // Event category
+  url += "&ec=" + encodeURI("PSGuides-" + appVersion);
+  // Event action
+  // url += "&ea=" + encodeURI(eventAction);
+  url += "&ea=" + encodeURI(action);
+  // Event label
+  // if (eventLabel) {
+  //     url += "&el=" + encodeURI(eventLabel);
+  // }
+  url += "&el=" + encodeURI(label);
+  // Event value
+  // if (eventValue) {
+  //     url += "&ev=" + encodeURI(eventValue);
+  // }
+  url += "&ev=" + encodeURI(value);
+
+  // console.log("new ga url: " + url);
+
+  var session = NSURLSession.sharedSession();
+  var task = session.dataTaskWithURL(NSURL.URLWithString(NSString.stringWithString(url)));
+  task.resume();
 
 }
 

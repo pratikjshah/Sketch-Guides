@@ -11,8 +11,8 @@ license: MIT
 
 var commandInit = function(context) {
   // Get all the things
-  context.document.showMessage("Inside commandInit");
-  initPlugin(context);
+  // context.document.showMessage("Inside commandInit");
+  // initPlugin(context);
 }
 
 var addGuides = function(context) {

@@ -7,7 +7,7 @@
     "appcast": "https://raw.githubusercontent.com/pratikjshah/PS-Guides/master/appcast.xml",
     "updateURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
     "downloadURL": "https://github.com/pratikjshah/PS-Guides/archive/master.zip",
-    "version": "2.0.4",
+    "version": "3.2.1",
     "identifier": "website.pratikshah.guides",
     "icon": "PS-Guides.png",
     "compatibleVersion": "40",
@@ -50,7 +50,6 @@
         {
             "script": "help.js",
             "handler": "collapseGroupsNArtboard",
-            "shortcut": "cmd e",
             "name": "Collapse Groups & Artboards",
             "identifier": "collapseGroupsNArtboard"
         },
@@ -81,8 +80,6 @@
             "addGuides",
             "addLastGuides",
             "clearGuides",
-            "-",
-            "collapseGroupsNArtboard",
             "-",
             "reportIssue",
             "checkForUpdate",
